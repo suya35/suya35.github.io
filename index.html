@@ -601,39 +601,40 @@
       </div>
     </div>
 
-    <!-- Not: Bu form istemci taraflıdır; e-postaların gerçekten size ulaşması için Formspree/EmailJS gibi bir servis ya da kendi backend uç noktanızla bağlamanız gerekir. -->
+    <!-- Formspree (Ajax SDK) entegrasyonu -->
+    <div style="display: none; text-align: center; margin-bottom: 2rem; padding: 2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;" data-fs-success>
+      <span data-tr="Teşekkürler! Mesajınız alındı, en kısa sürede dönüş yapacağız." data-en="Thank you! Your message has been received, we'll be in touch soon.">Teşekkürler! Mesajınız alındı, en kısa sürede dönüş yapacağız.</span>
+    </div>
+
     <form class="contact-form reveal" id="contactForm">
       <div class="form-row">
         <div class="field">
           <label data-tr="Ad Soyad" data-en="Full Name">Ad Soyad</label>
-          <input type="text" required data-tr-placeholder="Adınız Soyadınız" data-en-placeholder="Your full name" placeholder="Adınız Soyadınız">
+          <input type="text" name="name" required data-tr-placeholder="Adınız Soyadınız" data-en-placeholder="Your full name" placeholder="Adınız Soyadınız" data-fs-field>
         </div>
         <div class="field">
           <label data-tr="E-posta" data-en="Email">E-posta</label>
-          <input type="email" required data-tr-placeholder="ornek@sirket.com" data-en-placeholder="you@company.com" placeholder="ornek@sirket.com">
+          <input type="email" name="email" required data-tr-placeholder="ornek@sirket.com" data-en-placeholder="you@company.com" placeholder="ornek@sirket.com" data-fs-field>
         </div>
       </div>
       <div class="form-row">
         <div class="field">
           <label data-tr="Telefon" data-en="Phone">Telefon</label>
-          <input type="tel" data-tr-placeholder="05XX XXX XX XX" data-en-placeholder="+1 555 000 0000" placeholder="05XX XXX XX XX">
+          <input type="tel" name="phone" data-tr-placeholder="05XX XXX XX XX" data-en-placeholder="+1 555 000 0000" placeholder="05XX XXX XX XX" data-fs-field>
         </div>
         <div class="field">
           <label data-tr="Şirket" data-en="Company">Şirket</label>
-          <input type="text" data-tr-placeholder="Şirket adınız" data-en-placeholder="Your company" placeholder="Şirket adınız">
+          <input type="text" name="company" data-tr-placeholder="Şirket adınız" data-en-placeholder="Your company" placeholder="Şirket adınız" data-fs-field>
         </div>
       </div>
       <div class="field">
         <label data-tr="Mesaj" data-en="Message">Mesaj</label>
-        <textarea required data-tr-placeholder="İşletmenizden ve ihtiyacınızdan kısaca bahsedin..." data-en-placeholder="Tell us briefly about your business and needs..." placeholder="İşletmenizden ve ihtiyacınızdan kısaca bahsedin..."></textarea>
+        <textarea name="message" required data-tr-placeholder="İşletmenizden ve ihtiyacınızdan kısaca bahsedin..." data-en-placeholder="Tell us briefly about your business and needs..." placeholder="İşletmenizden ve ihtiyacınızdan kısaca bahsedin..." data-fs-field></textarea>
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" data-fs-submit-btn>
         <span class="btn-dot"></span>
         <span data-tr="Gönder" data-en="Send">Gönder</span>
       </button>
-      <div class="form-success" id="formSuccess">
-        <span data-tr="Teşekkürler! Mesajınız alındı, en kısa sürede dönüş yapacağız." data-en="Thank you! Your message has been received, we'll be in touch soon.">Teşekkürler! Mesajınız alındı, en kısa sürede dönüş yapacağız.</span>
-      </div>
     </form>
   </div>
 </section>
@@ -726,16 +727,12 @@
   }, {threshold: .15});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // Contact form (client-side only demo — needs a real backend/service to send email)
-  var form = document.getElementById('contactForm');
-  var success = document.getElementById('formSuccess');
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    success.classList.add('is-visible');
-    setTimeout(function(){ form.reset(); }, 200);
-  });
+  // Contact form submission with Formspree (Ajax SDK)
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contactForm', formId: 'xrenebra' });
 })();
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
 </body>
 </html>
